@@ -1,0 +1,54 @@
+{
+    "section1": {
+        "files": [
+            {
+                "url": "assets/ColorPallette 1.png",
+                "type": "image",
+                "key": "ColorPallette 1"
+            },
+            {
+                "url": "assets/ColorPallette 2.png",
+                "type": "image",
+                "key": "ColorPallette 2"
+            },
+            {
+                "url": "assets/ColorPallette 3.png",
+                "type": "image",
+                "key": "ColorPallette 3"
+            },
+            {
+                "url": "assets/GradientMap1.jpg",
+                "type": "image",
+                "key": "GradientMap1"
+            },
+            {
+                "url": "assets/GradientMap2.jpg",
+                "type": "image",
+                "key": "GradientMap2"
+            },
+            {
+                "url": "assets/GradientMap3.jpg",
+                "type": "image",
+                "key": "GradientMap3"
+            },
+            {
+                "url": "assets/GradientMap4.jpg",
+                "type": "image",
+                "key": "GradientMap4"
+            },
+            {
+                "url": "assets/GradientMap5.jpg",
+                "type": "image",
+                "key": "GradientMap5"
+            }
+        ]
+    },
+    "meta": {
+        "app": "Phaser Editor 2D - Asset Pack Editor",
+        "contentType": "phasereditor2d.pack.core.AssetContentType",
+        "url": "https://phasereditor2d.com",
+        "version": 2,
+        "showAllFilesInBlocks": false,
+        "visible": true
+    }
+}
