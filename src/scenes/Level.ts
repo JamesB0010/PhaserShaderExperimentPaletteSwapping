@@ -22,7 +22,7 @@ export default class Level extends Phaser.Scene {
 	editorCreate(): void {
 
 		// ShaderOutputImage
-		const shaderOutputImage = this.add.image(640, 496, "GradientMap1");
+		const shaderOutputImage = this.add.image(640, 360, "GradientMap1");
 		shaderOutputImage.scaleX = 0.3;
 		shaderOutputImage.scaleY = 0.3;
 
@@ -44,13 +44,17 @@ export default class Level extends Phaser.Scene {
 		(this.renderer as WebGLRenderer).pipelines.add("PinkShader", new RenderImagePinkShader(this.game))
 		this.shaderOutputImage.setPipeline("PinkShader");
 
-		this.shaderOutputImage.setDisplaySize(640, 360);
+		this.SetOutputImageDisplaySize();
 		AddNewBlackWhiteSelectedCallback(this, this.NewBlackWhiteGradientSelected);
 	}
 
 	private NewBlackWhiteGradientSelected(gradientAssetKey : string){
 		this.shaderOutputImage.setTexture(gradientAssetKey);
-		this.shaderOutputImage.setDisplaySize(640, 360);
+		this.SetOutputImageDisplaySize();
+	}
+	
+	private SetOutputImageDisplaySize(){
+		this.shaderOutputImage.setDisplaySize(this.scale.width * 0.8, this.scale.height * 0.8);
 	}
 
 	/* END-USER-CODE */
