@@ -22,7 +22,7 @@ export default class Level extends Phaser.Scene {
 	editorCreate(): void {
 
 		// ShaderOutputImage
-		const shaderOutputImage = this.add.image(640, 462, "GradientMap1");
+		const shaderOutputImage = this.add.image(640, 496, "GradientMap1");
 		shaderOutputImage.scaleX = 0.3;
 		shaderOutputImage.scaleY = 0.3;
 
