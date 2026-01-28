@@ -7,6 +7,7 @@
 import WebGLRenderer = Phaser.Renderer.WebGL.WebGLRenderer;
 import RenderImagePinkShader from "../shaders/RenderImagePink.ts";
 import {AddNewBlackWhiteSelectedCallback} from "../EventsFromUi/NewBlackWhiteGradientSelected.ts";
+import {SetLoadIntoPhaserLambda} from "../EventsFromUi/NewGradientMapUploaded.ts";
 /* END-USER-IMPORTS */
 
 export default class Level extends Phaser.Scene {
@@ -27,7 +28,6 @@ export default class Level extends Phaser.Scene {
 		shaderOutputImage.scaleY = 0.3;
 
 		this.shaderOutputImage = shaderOutputImage;
-
 		this.events.emit("scene-awake");
 	}
 
@@ -46,6 +46,16 @@ export default class Level extends Phaser.Scene {
 
 		this.SetOutputImageDisplaySize();
 		AddNewBlackWhiteSelectedCallback(this, this.NewBlackWhiteGradientSelected);
+		SetLoadIntoPhaserLambda((url: string, gradientMapCount: number) : Promise<string>=>{
+			return new Promise<string>(resolve => {
+				const newAssetKey = `GradientMap${gradientMapCount}`;
+				this.load.image(`GradientMap${gradientMapCount}`, url);
+				this.load.once('complete', () => {
+					resolve(newAssetKey);
+				})
+				this.load.start();
+			})
+		});
 	}
 
 	private NewBlackWhiteGradientSelected(gradientAssetKey : string){

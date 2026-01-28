@@ -1,6 +1,8 @@
 ﻿<script setup lang="ts">
 import SelectableImage from "./SelectableImage.vue";
 import {watch} from "vue";
+import {fileOpen, FileWithHandle} from "browser-fs-access"
+import {read} from "image-js"
 
 const props = defineProps({
   selectableImages: Array<{url: string, key: string}>,
@@ -11,7 +13,7 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(["selected"]);
+const emit = defineEmits(["selected", "imageUploaded"]);
 
 function OnTrayImageClicked(args : {imgUrl: string, imgKey: string}) {
   emit("selected", args);
@@ -21,6 +23,36 @@ let hasBeenOpenedBefore = false;
 watch(() => props.active, () =>{
   hasBeenOpenedBefore = true;
 })
+
+let userPickingFile = false;
+
+async function UploadUserFile(){
+  if(userPickingFile)
+    return;
+  
+  userPickingFile = true;
+  const blob : FileWithHandle = await fileOpen({
+    description: 'Image files',
+    mimeTypes: ['image/jpg', 'image/png', 'image/gif', 'image/webp'],
+    extensions: ['.jpg', '.jpeg', '.png', '.gif', '.webp'],
+    multiple: false
+  });
+  userPickingFile = false;
+  
+  const newImageUrl : string = URL.createObjectURL(blob);
+  //const img = await read(newImageUrl);
+  
+  //const greyScaleImg = img.grey();
+  //const greyScaleImageBuffer = greyScaleImg.getRawImage();
+  //const greyScaleImageBlob = new Blob(greyScaleImageBuffer.data, { type: "image/png" });
+  //const greyScaleImageUrl = URL.createObjectURL(greyScaleBlob);
+  
+  //clean up
+  //URL.revokeObjectURL(newImageUrl);
+  
+  
+  emit("imageUploaded", newImageUrl);
+}
 </script>
 
 <template>
@@ -28,6 +60,9 @@ watch(() => props.active, () =>{
     <div id = "mainTray" :class = "{popIn: props.active, popOut: !props.active && hasBeenOpenedBefore}">
       <div v-for="selectableItem in props.selectableImages">
         <SelectableImage :img-url = selectableItem.url :img-key = selectableItem.key class = "selectableItem" @selected = "OnTrayImageClicked" :img-fit-mode="props.imgFitMode"></SelectableImage>
+      </div>
+      <div id = "UploadImage" @click="UploadUserFile">
+        <img src="../../public/assets/UploadIcon.png" height="500" width="500"/>
       </div>
     </div>
   </div>
@@ -135,6 +170,35 @@ watch(() => props.active, () =>{
   animation: fadeBackgroundToBlack 0.4s;
   animation-fill-mode: forwards;
   pointer-events: none;
+}
+
+#UploadImage{
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition-property: transform;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-in;
+  border-radius: 5%; 
+}
+
+#UploadImage:hover{
+  transform: scale(1.02);
+  outline: 2px solid white;
+  filter: drop-shadow(0 0 0.75rem rgba(237, 221, 83, 1)); 
+}
+
+#UploadImage img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 5%;
+  outline: white solid 1px;
+  transition-property: filter;
+  transition-duration: 0.2s;
+  transition-timing-function: ease-in;
 }
 
 </style>

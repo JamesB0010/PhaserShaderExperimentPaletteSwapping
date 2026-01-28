@@ -1,15 +1,16 @@
 ﻿<script setup lang="ts">
-import { ref } from 'vue'
+import {Ref, ref} from 'vue'
 import { NewColorSchemeSelected } from "../EventsFromUi/NewColorSchemeSelected.ts";
 import { speed } from "../UiModelData/MainUiModelData.ts";
 import SelectFromOptionsTray from "../VueComponents/SelectFromOptionsTray.vue";
 import { NewGradientSelected } from "../EventsFromUi/NewBlackWhiteGradientSelected.ts";
+import {NewGradientMapUploaded} from "../EventsFromUi/NewGradientMapUploaded.ts";
 
 const colorGradientUrl = ref("../../public/assets/ColorPallette 1.png");
 const blackWhiteGradientUrl = ref("../../public/assets/GradientMap1.jpg");
 const colorGradientSize = ref(4);
 
-const selectableImages: Array<{ url: string; key: string }> = [
+const selectableImages: Ref<Array<{ url: string; key: string }>> = ref([
   { url: "../../public/assets/GradientMap1.jpg", key: "GradientMap1" },
   { url: "../../public/assets/GradientMap2.jpg", key: "GradientMap2" },
   { url: "../../public/assets/GradientMap3.jpg", key: "GradientMap3" },
@@ -22,7 +23,7 @@ const selectableImages: Array<{ url: string; key: string }> = [
   { url: "../../public/assets/GradientMap6.png", key: "GradientMap6" },
   { url: "../../public/assets/GradientMap11.png", key: "GradientMap11" },
   { url: "../../public/assets/GradientMap12.png", key: "GradientMap12" },
-];
+]);
 
 const selectableColorSchemes: Array<{ url: string; key: string }> = [
   { url: "../../public/assets/ColorPallette 1.png", key: "4" },
@@ -98,6 +99,14 @@ const uiCardClass = ref<string>();
 function TryExpandCloseUiCard() {
   uiCardClass.value =
       mouseX < window.innerWidth * 0.4 ? "uiCardActive" : "uiCardInactive";
+}
+
+async function NewGradientUploaded(url: string){
+  let newAssetKey = await NewGradientMapUploaded(url, selectableImages.value.length + 1);
+  selectableImages.value.push({
+    url: url, key: newAssetKey
+  });
+  BlackWhiteGradientSelected({imgUrl: url, imgKey: newAssetKey});
 }
 </script>
 
@@ -175,6 +184,7 @@ function TryExpandCloseUiCard() {
           :active="blackWhiteGradientTrayActive"
           @selected="BlackWhiteGradientSelected"
           img-fit-mode="cover"
+          @image-uploaded="NewGradientUploaded"
       />
     </div>
   </div>
