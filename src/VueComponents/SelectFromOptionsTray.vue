@@ -2,7 +2,7 @@
 import SelectableImage from "./SelectableImage.vue";
 import {watch} from "vue";
 import {fileOpen, FileWithHandle} from "browser-fs-access"
-import {read} from "image-js"
+import {fetchURL, Image, writeCanvas} from "image-js"
 
 const props = defineProps({
   selectableImages: Array<{url: string, key: string}>,
@@ -40,18 +40,35 @@ async function UploadUserFile(){
   userPickingFile = false;
   
   const newImageUrl : string = URL.createObjectURL(blob);
-  //const img = await read(newImageUrl);
   
-  //const greyScaleImg = img.grey();
-  //const greyScaleImageBuffer = greyScaleImg.getRawImage();
-  //const greyScaleImageBlob = new Blob(greyScaleImageBuffer.data, { type: "image/png" });
-  //const greyScaleImageUrl = URL.createObjectURL(greyScaleBlob);
+  const greyscaleBlobURL = await ConvertImageUrlToGreyscaleUrl(newImageUrl);
   
-  //clean up
-  //URL.revokeObjectURL(newImageUrl);
+  //cleanup uneeded object urls
+  URL.revokeObjectURL(newImageUrl);
   
+  emit("imageUploaded", greyscaleBlobURL);
+}
+
+async function ConvertImageUrlToGreyscaleUrl(inUrl : string) : Promise<string>{
+  let uploadedImage : Image = await fetchURL(inUrl);
+  const imageGreyscale = uploadedImage.grey();
+
+  const greyscaleBlob = await WriteImageToBlob(imageGreyscale);
+
+  return URL.createObjectURL(greyscaleBlob);
+}
+
+async function WriteImageToBlob(image : Image): Promise<Blob>{
+  const canvas = document.createElement('canvas');
+  writeCanvas(image, canvas);
+
+  return new Promise((resolve) =>
+      canvas.toBlob(
+          (b) => resolve(b!),
+          'image/png' // or image/jpeg, image/webp
+      )
+  );
   
-  emit("imageUploaded", newImageUrl);
 }
 </script>
 
