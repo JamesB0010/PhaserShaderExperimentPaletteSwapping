@@ -1,5 +1,6 @@
 ﻿<script setup lang="ts">
 import SelectableImage from "./SelectableImage.vue";
+import {watch} from "vue";
 
 const props = defineProps({
   selectableImages: Array<{url: string, key: string}>,
@@ -15,11 +16,16 @@ const emit = defineEmits(["selected"]);
 function OnTrayImageClicked(args : {imgUrl: string, imgKey: string}) {
   emit("selected", args);
 }
+
+let hasBeenOpenedBefore = false;
+watch(() => props.active, () =>{
+  hasBeenOpenedBefore = true;
+})
 </script>
 
 <template>
-  <div id = "fullScreenCover" :class="{activeBackground: props.active}">
-    <div id = "mainTray" :class = "{popIn: props.active}">
+  <div id = "fullScreenCover" :class="{activeBackground: props.active, inactiveBackground : !props.active && hasBeenOpenedBefore}">
+    <div id = "mainTray" :class = "{popIn: props.active, popOut: !props.active && hasBeenOpenedBefore}">
       <div id = "darken"></div>
       <div v-for="selectableItem in props.selectableImages">
         <SelectableImage :img-url = selectableItem.url :img-key = selectableItem.key class = "selectableItem" @selected = "OnTrayImageClicked" :img-fit-mode="props.imgFitMode"></SelectableImage>
@@ -107,6 +113,39 @@ function OnTrayImageClicked(args : {imgUrl: string, imgKey: string}) {
   animation: fadeBackgroundFromBlack 0.4s;
   animation-fill-mode: forwards;
   pointer-events: all;
+}
+
+@keyframes fadeBackgroundToBlack {
+  0%{
+    background-color: var(--FullscreenCoverBackgroundColorActive);
+  }
+  100%{
+    background-color: rgba(0,0,0,0);
+  }
+}
+
+@keyframes popTrayOut {
+  0% {
+    transform: scale(1);
+  }
+  30% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+
+#mainTray.popOut{
+  animation: popTrayOut 0.4s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in;
+}
+
+#fullScreenCover.inactiveBackground{
+  animation: fadeBackgroundToBlack 0.4s;
+  animation-fill-mode: forwards;
+  pointer-events: none;
 }
 
 </style>
