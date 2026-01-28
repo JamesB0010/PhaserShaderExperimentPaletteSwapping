@@ -9,7 +9,8 @@ const colorSchemeURLsToAssetPackKey = new Map<string, string>([
     ["../../public/assets/ColorPallette 4.png", "ColorPallette 4"],
     ["../../public/assets/ColorPallette 5.png", "ColorPallette 5"],
     ["../../public/assets/ColorPallette 6.png", "ColorPallette 6"],
-    ["../../public/assets/ColorPallette 7.png", "ColorPallette 7"]
+    ["../../public/assets/ColorPallette 7.png", "ColorPallette 7"],
+    ["../../public/assets/ColorPallette 8.png", "ColorPallette 8"],
 ]);
 
 function NewColorSchemeSelected(newImageInfo : {colorSchemeImageUrl : string, size: number}) {
@@ -27,4 +28,8 @@ function AddNewColorSchemeSelectedCallback(ctx: any, callback: (newImageInfo : {
     newColorSchemeSelectedHandlers.push(handler);
 }
 
-export {AddNewColorSchemeSelectedCallback, NewColorSchemeSelected};
+function AddNewUrlToAssetPackMapItem(imageUrl: string, assetKey:string){
+    colorSchemeURLsToAssetPackKey.set(imageUrl, assetKey);
+}
+
+export {AddNewColorSchemeSelectedCallback, NewColorSchemeSelected, AddNewUrlToAssetPackMapItem};

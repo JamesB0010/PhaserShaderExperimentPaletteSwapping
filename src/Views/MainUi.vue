@@ -1,10 +1,13 @@
 ﻿<script setup lang="ts">
 import {Ref, ref} from 'vue'
-import { NewColorSchemeSelected } from "../EventsFromUi/NewColorSchemeSelected.ts";
+import {AddNewUrlToAssetPackMapItem, NewColorSchemeSelected} from "../EventsFromUi/NewColorSchemeSelected.ts";
 import { speed } from "../UiModelData/MainUiModelData.ts";
 import SelectFromOptionsTray from "../VueComponents/SelectFromOptionsTray.vue";
 import { NewGradientSelected } from "../EventsFromUi/NewBlackWhiteGradientSelected.ts";
 import {NewGradientMapUploaded} from "../EventsFromUi/NewGradientMapUploaded.ts";
+import GradientMapImageProcessor from "../ImageUploadProcessors/GradientMapImageProcessor.ts";
+import ColorPaletteImageProcessor from "../ImageUploadProcessors/ColorPaletteImageProcessor.ts";
+import {LoadNewColorPaletteIntoPhaser} from "../EventsFromUi/NewColorPaletteUploaded.ts";
 
 const colorGradientUrl = ref("../../public/assets/ColorPallette 1.png");
 const blackWhiteGradientUrl = ref("../../public/assets/GradientMap1.jpg");
@@ -25,15 +28,16 @@ const selectableImages: Ref<Array<{ url: string; key: string }>> = ref([
   { url: "../../public/assets/GradientMap12.png", key: "GradientMap12" },
 ]);
 
-const selectableColorSchemes: Array<{ url: string; key: string }> = [
+const selectableColorSchemes: Ref<Array<{ url: string; key: string }>> = ref([
   { url: "../../public/assets/ColorPallette 1.png", key: "4" },
   { url: "../../public/assets/ColorPallette 2.png", key: "4" },
   { url: "../../public/assets/ColorPallette 3.png", key: "8" },
   { url: "../../public/assets/ColorPallette 4.png", key: "5" },
   { url: "../../public/assets/ColorPallette 5.png", key: "4" },
   { url: "../../public/assets/ColorPallette 6.png", key: "6" },
-  { url: "../../public/assets/ColorPallette 7.png", key: "6" }
-];
+  { url: "../../public/assets/ColorPallette 7.png", key: "6" },
+  { url: "../../public/assets/ColorPallette 8.png", key: "5" }
+]);
 
 const trayHangTime = 1000;
 let lockUiCardOpen = false;
@@ -108,6 +112,26 @@ async function NewGradientUploaded(url: string){
   });
   BlackWhiteGradientSelected({imgUrl: url, imgKey: newAssetKey});
 }
+
+async function NewColorPaletteUploaded(colorPaletteData : {imageBlobUrl: string; size: number}) {
+  let paletteAssetKey = await LoadNewColorPaletteIntoPhaser(colorPaletteData.imageBlobUrl, selectableColorSchemes.value.length + 1);
+  const sizeAsString = colorPaletteData.size.toString();
+  selectableColorSchemes.value.push({
+    url: colorPaletteData.imageBlobUrl,
+    key: sizeAsString
+  });
+  AddNewUrlToAssetPackMapItem(colorPaletteData.imageBlobUrl, paletteAssetKey);
+  ColorSchemeSelected({imgUrl: colorPaletteData.imageBlobUrl, imgKey: sizeAsString});
+}
+
+const colorPaletteImageProcessor : ColorPaletteImageProcessor = new ColorPaletteImageProcessor();
+colorPaletteImageProcessor.AddImageProcessedCallback((paletteData : {imageBlobUrl : string, size: number}) =>{
+  NewColorPaletteUploaded(paletteData);
+})
+const gradientMapImageProcessor : GradientMapImageProcessor = new GradientMapImageProcessor();
+gradientMapImageProcessor.AddImageProcessedCallback((imgUrl : string) =>{
+  NewGradientUploaded(imgUrl);
+})
 </script>
 
 <template>
@@ -175,6 +199,7 @@ async function NewGradientUploaded(url: string){
           :selectable-images="selectableColorSchemes"
           :active="colorSchemeTrayActive"
           @selected="ColorSchemeSelected"
+          :image-upload-processor = "colorPaletteImageProcessor"
       />
     </div>
 
@@ -184,7 +209,7 @@ async function NewGradientUploaded(url: string){
           :active="blackWhiteGradientTrayActive"
           @selected="BlackWhiteGradientSelected"
           img-fit-mode="cover"
-          @image-uploaded="NewGradientUploaded"
+          :image-upload-processor="gradientMapImageProcessor"
       />
     </div>
   </div>

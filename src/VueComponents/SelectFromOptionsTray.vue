@@ -1,8 +1,8 @@
 ﻿<script setup lang="ts">
 import SelectableImage from "./SelectableImage.vue";
 import {watch} from "vue";
-import {fileOpen, FileWithHandle} from "browser-fs-access"
-import {fetchURL, Image, writeCanvas} from "image-js"
+import GradientMapImageProcessor from "../ImageUploadProcessors/GradientMapImageProcessor.ts";
+import ImageUploadProcessor from "../ImageUploadProcessors/ImageUploadProcessor.ts";
 
 const props = defineProps({
   selectableImages: Array<{url: string, key: string}>,
@@ -10,10 +10,19 @@ const props = defineProps({
   imgFitMode : {
     type: String,
     default: "contain"
+  },
+  imageUploadProcessor:{
+    type: Object,
+    default: new GradientMapImageProcessor()
   }
 })
 
-const emit = defineEmits(["selected", "imageUploaded"]);
+const imageUploadProcessor : ImageUploadProcessor = props.imageUploadProcessor as ImageUploadProcessor;
+
+//todo Create a inImageUploadProcess class with a gradientMapUploadProcess and colorPaletteUploadProcess derived classes which will encapsulate the behaviour of image processing and what not to allow different actions to be taken 
+//in response to a file being uplaoded
+
+const emit = defineEmits(["selected"]);
 
 function OnTrayImageClicked(args : {imgUrl: string, imgKey: string}) {
   emit("selected", args);
@@ -31,45 +40,12 @@ async function UploadUserFile(){
     return;
   
   userPickingFile = true;
-  const blob : FileWithHandle = await fileOpen({
-    description: 'Image files',
-    mimeTypes: ['image/jpg', 'image/png', 'image/gif', 'image/webp'],
-    extensions: ['.jpg', '.jpeg', '.png', '.gif', '.webp'],
-    multiple: false
-  });
+  
+  await imageUploadProcessor.ProcessImage();
+  
   userPickingFile = false;
-  
-  const newImageUrl : string = URL.createObjectURL(blob);
-  
-  const greyscaleBlobURL = await ConvertImageUrlToGreyscaleUrl(newImageUrl);
-  
-  //cleanup uneeded object urls
-  URL.revokeObjectURL(newImageUrl);
-  
-  emit("imageUploaded", greyscaleBlobURL);
 }
 
-async function ConvertImageUrlToGreyscaleUrl(inUrl : string) : Promise<string>{
-  let uploadedImage : Image = await fetchURL(inUrl);
-  const imageGreyscale = uploadedImage.grey();
-
-  const greyscaleBlob = await WriteImageToBlob(imageGreyscale);
-
-  return URL.createObjectURL(greyscaleBlob);
-}
-
-async function WriteImageToBlob(image : Image): Promise<Blob>{
-  const canvas = document.createElement('canvas');
-  writeCanvas(image, canvas);
-
-  return new Promise((resolve) =>
-      canvas.toBlob(
-          (b) => resolve(b!),
-          'image/png' // or image/jpeg, image/webp
-      )
-  );
-  
-}
 </script>
 
 <template>

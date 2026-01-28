@@ -37,6 +37,11 @@
                 "key": "ColorPallette 7"
             },
             {
+                "url": "assets/ColorPallette 8.png",
+                "type": "image",
+                "key": "ColorPallette 8"
+            },
+            {
                 "url": "assets/GradientMap1.jpg",
                 "type": "image",
                 "key": "GradientMap1"
