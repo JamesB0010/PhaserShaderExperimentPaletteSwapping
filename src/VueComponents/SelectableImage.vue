@@ -48,6 +48,7 @@ div {
   transition-property: transform;
   transition-duration: 0.2s;
   transition-timing-function: ease-in;
+  border-radius: 5%;
 }
 
 div:hover{
@@ -65,7 +66,7 @@ img {
   transition-timing-function: ease-in;
 }
 
-img:hover{
+div:hover{
   outline: 2px solid white;
   filter: drop-shadow(0 0 0.75rem rgba(237, 221, 83, 1));
 }

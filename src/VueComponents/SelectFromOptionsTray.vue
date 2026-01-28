@@ -26,7 +26,6 @@ watch(() => props.active, () =>{
 <template>
   <div id = "fullScreenCover" :class="{activeBackground: props.active, inactiveBackground : !props.active && hasBeenOpenedBefore}">
     <div id = "mainTray" :class = "{popIn: props.active, popOut: !props.active && hasBeenOpenedBefore}">
-      <div id = "darken"></div>
       <div v-for="selectableItem in props.selectableImages">
         <SelectableImage :img-url = selectableItem.url :img-key = selectableItem.key class = "selectableItem" @selected = "OnTrayImageClicked" :img-fit-mode="props.imgFitMode"></SelectableImage>
       </div>
@@ -69,17 +68,7 @@ watch(() => props.active, () =>{
   overflow-y: auto;                      /* ✅ scrolling */
   
   transform: scale(0);
-}
-
-#darken{
-  position: absolute;
-  left: 0%;
-  top:0%;
-  width: 100%;
-  height: 100%;
   background-color: rgba(0,0,0,0.5);
-  border-radius: 5%;
-  pointer-events: none;
 }
 
 @keyframes fadeBackgroundFromBlack {

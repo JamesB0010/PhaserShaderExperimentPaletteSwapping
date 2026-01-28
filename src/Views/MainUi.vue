@@ -14,13 +14,24 @@ const selectableImages: Array<{ url: string; key: string }> = [
   { url: "../../public/assets/GradientMap2.jpg", key: "GradientMap2" },
   { url: "../../public/assets/GradientMap3.jpg", key: "GradientMap3" },
   { url: "../../public/assets/GradientMap4.jpg", key: "GradientMap4" },
-  { url: "../../public/assets/GradientMap5.jpg", key: "GradientMap5" }
+  { url: "../../public/assets/GradientMap5.jpg", key: "GradientMap5" },
+  { url: "../../public/assets/GradientMap7.png", key: "GradientMap7" },
+  { url: "../../public/assets/GradientMap8.png", key: "GradientMap8" },
+  { url: "../../public/assets/GradientMap9.png", key: "GradientMap9" },
+  { url: "../../public/assets/GradientMap10.png", key: "GradientMap10" },
+  { url: "../../public/assets/GradientMap6.png", key: "GradientMap6" },
+  { url: "../../public/assets/GradientMap11.png", key: "GradientMap11" },
+  { url: "../../public/assets/GradientMap12.png", key: "GradientMap12" },
 ];
 
 const selectableColorSchemes: Array<{ url: string; key: string }> = [
   { url: "../../public/assets/ColorPallette 1.png", key: "4" },
   { url: "../../public/assets/ColorPallette 2.png", key: "4" },
-  { url: "../../public/assets/ColorPallette 3.png", key: "8" }
+  { url: "../../public/assets/ColorPallette 3.png", key: "8" },
+  { url: "../../public/assets/ColorPallette 4.png", key: "5" },
+  { url: "../../public/assets/ColorPallette 5.png", key: "4" },
+  { url: "../../public/assets/ColorPallette 6.png", key: "6" },
+  { url: "../../public/assets/ColorPallette 7.png", key: "6" }
 ];
 
 const trayHangTime = 1000;
@@ -95,13 +106,13 @@ function TryExpandCloseUiCard() {
     <div id="uiCard" :class="uiCardClass">
 
       <div id="titleSection">
-        <h1>Pallette Cycling Demo!</h1>
+        <h1>Pallette Cycling Demo</h1>
         <p>By James Bland made with Phaser</p>
       </div>
 
       <!-- Color Gradient -->
       <div class="section">
-        <h2>🎨 Color Gradient</h2>
+        <h2>🎨 Color Palette</h2>
 
         <div
             id="gradientMapPreview"
@@ -116,7 +127,7 @@ function TryExpandCloseUiCard() {
 
       <!-- Black & White Gradient -->
       <div class="section">
-        <h2>⚫ Black & White Gradient</h2>
+        <h2>⚫ Gradient Map</h2>
 
         <div
             id="blackWhiteGradientMapPreview"

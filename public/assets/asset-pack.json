@@ -17,9 +17,44 @@
                 "key": "ColorPallette 3"
             },
             {
+                "url": "assets/ColorPallette 4.png",
+                "type": "image",
+                "key": "ColorPallette 4"
+            },
+            {
+                "url": "assets/ColorPallette 5.png",
+                "type": "image",
+                "key": "ColorPallette 5"
+            },
+            {
+                "url": "assets/ColorPallette 6.png",
+                "type": "image",
+                "key": "ColorPallette 6"
+            },
+            {
+                "url": "assets/ColorPallette 7.png",
+                "type": "image",
+                "key": "ColorPallette 7"
+            },
+            {
                 "url": "assets/GradientMap1.jpg",
                 "type": "image",
                 "key": "GradientMap1"
+            },
+            {
+                "url": "assets/GradientMap10.png",
+                "type": "image",
+                "key": "GradientMap10"
+            },
+            {
+                "url": "assets/GradientMap11.png",
+                "type": "image",
+                "key": "GradientMap11"
+            },
+            {
+                "url": "assets/GradientMap12.png",
+                "type": "image",
+                "key": "GradientMap12"
             },
             {
                 "url": "assets/GradientMap2.jpg",
@@ -40,6 +75,26 @@
                 "url": "assets/GradientMap5.jpg",
                 "type": "image",
                 "key": "GradientMap5"
+            },
+            {
+                "url": "assets/GradientMap6.png",
+                "type": "image",
+                "key": "GradientMap6"
+            },
+            {
+                "url": "assets/GradientMap7.png",
+                "type": "image",
+                "key": "GradientMap7"
+            },
+            {
+                "url": "assets/GradientMap8.png",
+                "type": "image",
+                "key": "GradientMap8"
+            },
+            {
+                "url": "assets/GradientMap9.png",
+                "type": "image",
+                "key": "GradientMap9"
             }
         ]
     },
