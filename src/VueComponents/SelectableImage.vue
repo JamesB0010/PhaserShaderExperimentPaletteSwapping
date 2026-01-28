@@ -1,5 +1,6 @@
 ﻿<script setup lang="ts">
-import {NewGradientSelected} from "../EventsFromUi/NewBlackWhiteGradientSelected.ts";
+
+import {ref} from "vue";
 
 const props = defineProps({
   imgUrl: {
@@ -9,24 +10,35 @@ const props = defineProps({
   imgKey: {
     type: String,
     default: "GradientMap1"
+  },
+  imgFitMode : {
+    type: String,
+    default: "contain"
   }
 });
 
 const emit = defineEmits(['selected'])
 
+const fitMode = ref(props.imgFitMode);
+
+
 function Selected(){
-  NewGradientSelected(props.imgKey)
-  emit("selected");
+  emit("selected", {imgUrl: props.imgUrl, imgKey: props.imgKey});
 }
 </script>
 
 <template>
   <div>
-    <img :src="props.imgUrl" @click = "Selected">
+    <img :src="props.imgUrl" @click = "Selected" :style="{ '--ImageObjectFitMode': fitMode }">
   </div>
 </template>
 
 <style scoped>
+@property --ImageObjectFitMode {
+  syntax: "*";
+  inherits: false;
+}
+
 div {
   width: 100%;
   height: 100%;
@@ -45,7 +57,7 @@ div:hover{
 img {
   width: 100%;
   height: 100%;
-  object-fit: cover; /* or contain */
+  object-fit: var(--ImageObjectFitMode); /* or contain */
   border-radius: 5%;
   outline: white solid 1px; 
   transition-property: filter;

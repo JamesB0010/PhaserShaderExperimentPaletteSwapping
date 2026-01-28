@@ -3,6 +3,7 @@ import {ref} from 'vue'
 import {NewColorSchemeSelected} from "../EventsFromUi/NewColorSchemeSelected.ts";
 import {speed} from "../UiModelData/MainUiModelData.ts";
 import SelectFromOptionsTray from "../VueComponents/SelectFromOptionsTray.vue";
+import {NewGradientSelected} from "../EventsFromUi/NewBlackWhiteGradientSelected.ts";
 
 const colorGradientUrl = ref("../../public/assets/ColorPallette 1.png");
 
@@ -16,21 +17,41 @@ const selectableImages :Array<{ url: string; key: string }> = [
     {url: "../../public/assets/GradientMap5.jpg", key: "GradientMap5"}
 ]
 
-
-function NewColorGradientSelected(event : Event & { target: HTMLSelectElement }){
-  const selectionValue : string = event.target.value;
-  const optionSelectedInfo : {url : string, size: number} = JSON.parse(selectionValue);
-  colorGradientUrl.value = optionSelectedInfo.url;
-  colorGradientSize.value = optionSelectedInfo.size;
-  NewColorSchemeSelected({colorSchemeImageUrl:colorGradientUrl.value, size: optionSelectedInfo.size});
-}
+const selectableColorSchemes : Array<{url: string, key: string}> = [
+  {url: "../../public/assets/ColorPallette 1.png", key: "4"},
+  {url: "../../public/assets/ColorPallette 2.png", key: "4"},
+  {url: "../../public/assets/ColorPallette 3.png", key: "8"}
+]
 
 const blackWhiteGradientTrayActive = ref(false);
 function DisplayBlackWhiteGradientTray(){
   blackWhiteGradientTrayActive.value = true;
 }
+function BlackWhiteGradientSelected(args : {imgUrl: string, imgKey: string}) {
+  CloseBlackWhiteGradientTray();
+  NewGradientSelected(args.imgKey)
+}
 function CloseBlackWhiteGradientTray(){
   blackWhiteGradientTrayActive.value = false;
+}
+
+const colorSchemeTrayActive = ref(false);
+function DispyColorSchemeTray(){
+  colorSchemeTrayActive.value = true;
+}
+
+function ColorSchemeSelected(args : {imgUrl: string, imgKey: string}) {
+  CloseColorSchemeTray();
+  
+  const selectedColorSchemeInfo : {colorSchemeImageUrl : string, size: number} = {colorSchemeImageUrl: args.imgUrl, size: Number(args.imgKey)}
+  
+  colorGradientUrl.value = selectedColorSchemeInfo.colorSchemeImageUrl;
+  colorGradientSize.value = selectedColorSchemeInfo.size;
+  
+  NewColorSchemeSelected(selectedColorSchemeInfo);
+}
+function CloseColorSchemeTray(){
+  colorSchemeTrayActive.value = false;
 }
 </script>
 
@@ -38,12 +59,8 @@ function CloseBlackWhiteGradientTray(){
   <div id = "centerTitle">
     <h1>Shader time!</h1>
     <div id = "chooseColorGradientArea">
-      <p>Choose a color gradient: </p>
-      <select @change="NewColorGradientSelected" name = "color gradient">
-        <option value = '{"url" : "../../public/assets/ColorPallette 1.png", "size" : 4}'>option 1</option>
-        <option value= '{"url" : "../../public/assets/ColorPallette 2.png", "size" : 4}'>option 2</option>
-        <option value= '{"url" : "../../public/assets/ColorPallette 3.png", "size" : 8}'>option 3</option>
-      </select>
+      <button @click = "DispyColorSchemeTray">Choose a color gradient</button>
+      <div id = "buffer"></div>
     </div>
     <div id = "gradientMapPreview">
       <img :src="colorGradientUrl">
@@ -63,7 +80,10 @@ function CloseBlackWhiteGradientTray(){
     </div>
   </div>
   <div id = "blackWhiteImageTrayContainer">
-    <select-from-options-tray :selectable-images="selectableImages" :active = "blackWhiteGradientTrayActive" @selected="CloseBlackWhiteGradientTray"/>
+    <select-from-options-tray :selectable-images="selectableImages" :active = "blackWhiteGradientTrayActive" @selected="BlackWhiteGradientSelected" img-fit-mode="cover"/>
+  </div>
+  <div id = "colorGradientTrayContaier">
+    <select-from-options-tray :selectable-images = "selectableColorSchemes":active = "colorSchemeTrayActive" @selected="ColorSchemeSelected"/>
   </div>
 </template>
 
@@ -141,8 +161,14 @@ img{
 #chooseColorGradientArea{
   display: flex;
   width : 100%;
+  height: 10%;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+}
+
+#chooseColorGradientArea #buffer{
+  height: 10%;
 }
 
 #chooseBlackWhiteGradient{

@@ -3,10 +3,18 @@ import SelectableImage from "./SelectableImage.vue";
 
 const props = defineProps({
   selectableImages: Array<{url: string, key: string}>,
-  active: Boolean
+  active: Boolean,
+  imgFitMode : {
+    type: String,
+    default: "contain"
+  }
 })
 
-const emits = defineEmits(["selected"]);
+const emit = defineEmits(["selected"]);
+
+function OnTrayImageClicked(args : {imgUrl: string, imgKey: string}) {
+  emit("selected", args);
+}
 </script>
 
 <template>
@@ -14,7 +22,7 @@ const emits = defineEmits(["selected"]);
     <div id = "mainTray" :class = "{popIn: props.active}">
       <div id = "darken"></div>
       <div v-for="selectableItem in props.selectableImages">
-        <SelectableImage :img-url = selectableItem.url :img-key = selectableItem.key class = "selectableItem" @selected = "$emit('selected')"></SelectableImage>
+        <SelectableImage :img-url = selectableItem.url :img-key = selectableItem.key class = "selectableItem" @selected = "OnTrayImageClicked" :img-fit-mode="props.imgFitMode"></SelectableImage>
       </div>
     </div>
   </div>
