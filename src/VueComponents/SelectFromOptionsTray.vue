@@ -19,9 +19,6 @@ const props = defineProps({
 
 const imageUploadProcessor : ImageUploadProcessor = props.imageUploadProcessor as ImageUploadProcessor;
 
-//todo Create a inImageUploadProcess class with a gradientMapUploadProcess and colorPaletteUploadProcess derived classes which will encapsulate the behaviour of image processing and what not to allow different actions to be taken 
-//in response to a file being uplaoded
-
 const emit = defineEmits(["selected"]);
 
 function OnTrayImageClicked(args : {imgUrl: string, imgKey: string}) {
