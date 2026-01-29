@@ -3,6 +3,7 @@ import SelectableImage from "./SelectableImage.vue";
 import {watch} from "vue";
 import GradientMapImageProcessor from "../ImageUploadProcessors/GradientMapImageProcessor.ts";
 import ImageUploadProcessor from "../ImageUploadProcessors/ImageUploadProcessor.ts";
+import ColorPaletteWidthDisplay from "./ColorPaletteWidthDisplay.vue";
 
 const props = defineProps({
   selectableImages: Array<{url: string, key: string}>,
@@ -14,6 +15,10 @@ const props = defineProps({
   imageUploadProcessor:{
     type: Object,
     default: new GradientMapImageProcessor()
+  },
+  displayImageWidth : {
+    type: Boolean,
+    default: false
   }
 })
 
@@ -49,7 +54,10 @@ async function UploadUserFile(){
   <div id = "fullScreenCover" :class="{activeBackground: props.active, inactiveBackground : !props.active && hasBeenOpenedBefore}">
     <div id = "mainTray" :class = "{popIn: props.active, popOut: !props.active && hasBeenOpenedBefore}">
       <div v-for="selectableItem in props.selectableImages">
-        <SelectableImage :img-url = selectableItem.url :img-key = selectableItem.key class = "selectableItem" @selected = "OnTrayImageClicked" :img-fit-mode="props.imgFitMode"></SelectableImage>
+        <div id = "itemWrapper">
+          <ColorPaletteWidthDisplay/>
+          <SelectableImage :img-url = selectableItem.url :img-key = selectableItem.key class = "selectableItem" @selected = "OnTrayImageClicked" :img-fit-mode="props.imgFitMode"/>
+        </div>
       </div>
       <div id = "UploadImage" @click="UploadUserFile">
         <img src="/assets/UploadIcon.png" height="500" width="500"/>
@@ -173,7 +181,15 @@ async function UploadUserFile(){
   transition-timing-function: ease-in;
   border-radius: 5%; 
 }
-
+#itemWrapper{
+  height: 100%;
+  width: 100%;
+  inset: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
 #UploadImage:hover{
   transform: scale(1.02);
   outline: 2px solid white;

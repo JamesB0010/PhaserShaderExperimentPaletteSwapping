@@ -30,6 +30,7 @@ function Selected(){
 <template>
   <div>
     <img :src="props.imgUrl" @click = "Selected" :style="{ '--ImageObjectFitMode': fitMode }">
+    <slot></slot>
   </div>
 </template>
 
@@ -49,6 +50,7 @@ div {
   transition-duration: 0.2s;
   transition-timing-function: ease-in;
   border-radius: 5%;
+  position: absolute;
 }
 
 div:hover{
