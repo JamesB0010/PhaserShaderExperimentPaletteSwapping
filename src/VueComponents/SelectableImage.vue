@@ -5,7 +5,7 @@ import {ref} from "vue";
 const props = defineProps({
   imgUrl: {
     type: String,
-    default: "../../public/assets/GradientMap1.jpg"
+    default: "/assets/GradientMap1.jpg"
   },
   imgKey: {
     type: String,

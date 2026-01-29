@@ -9,34 +9,34 @@ import GradientMapImageProcessor from "../ImageUploadProcessors/GradientMapImage
 import ColorPaletteImageProcessor from "../ImageUploadProcessors/ColorPaletteImageProcessor.ts";
 import {LoadNewColorPaletteIntoPhaser} from "../EventsFromUi/NewColorPaletteUploaded.ts";
 
-const colorGradientUrl = ref("../../public/assets/ColorPallette 1.png");
-const blackWhiteGradientUrl = ref("../../public/assets/GradientMap1.jpg");
+const colorGradientUrl = ref("/assets/ColorPallette 1.png");
+const blackWhiteGradientUrl = ref("/assets/GradientMap1.jpg");
 const colorGradientSize = ref(4);
 
 const selectableImages: Ref<Array<{ url: string; key: string }>> = ref([
-  { url: "../../public/assets/GradientMap1.jpg", key: "GradientMap1" },
-  { url: "../../public/assets/GradientMap2.jpg", key: "GradientMap2" },
-  { url: "../../public/assets/GradientMap3.jpg", key: "GradientMap3" },
-  { url: "../../public/assets/GradientMap4.jpg", key: "GradientMap4" },
-  { url: "../../public/assets/GradientMap5.jpg", key: "GradientMap5" },
-  { url: "../../public/assets/GradientMap7.png", key: "GradientMap7" },
-  { url: "../../public/assets/GradientMap8.png", key: "GradientMap8" },
-  { url: "../../public/assets/GradientMap9.png", key: "GradientMap9" },
-  { url: "../../public/assets/GradientMap10.png", key: "GradientMap10" },
-  { url: "../../public/assets/GradientMap6.png", key: "GradientMap6" },
-  { url: "../../public/assets/GradientMap11.png", key: "GradientMap11" },
-  { url: "../../public/assets/GradientMap12.png", key: "GradientMap12" },
+  { url: "/assets/GradientMap1.jpg", key: "GradientMap1" },
+  { url: "/assets/GradientMap2.jpg", key: "GradientMap2" },
+  { url: "/assets/GradientMap3.jpg", key: "GradientMap3" },
+  { url: "/assets/GradientMap4.jpg", key: "GradientMap4" },
+  { url: "/assets/GradientMap5.jpg", key: "GradientMap5" },
+  { url: "/assets/GradientMap7.png", key: "GradientMap7" },
+  { url: "/assets/GradientMap8.png", key: "GradientMap8" },
+  { url: "/assets/GradientMap9.png", key: "GradientMap9" },
+  { url: "/assets/GradientMap10.png", key: "GradientMap10" },
+  { url: "/assets/GradientMap6.png", key: "GradientMap6" },
+  { url: "/assets/GradientMap11.png", key: "GradientMap11" },
+  { url: "/assets/GradientMap12.png", key: "GradientMap12" },
 ]);
 
 const selectableColorSchemes: Ref<Array<{ url: string; key: string }>> = ref([
-  { url: "../../public/assets/ColorPallette 1.png", key: "4" },
-  { url: "../../public/assets/ColorPallette 2.png", key: "4" },
-  { url: "../../public/assets/ColorPallette 3.png", key: "8" },
-  { url: "../../public/assets/ColorPallette 4.png", key: "5" },
-  { url: "../../public/assets/ColorPallette 5.png", key: "4" },
-  { url: "../../public/assets/ColorPallette 6.png", key: "6" },
-  { url: "../../public/assets/ColorPallette 7.png", key: "6" },
-  { url: "../../public/assets/ColorPallette 8.png", key: "5" }
+  { url: "/assets/ColorPallette 1.png", key: "4" },
+  { url: "/assets/ColorPallette 2.png", key: "4" },
+  { url: "/assets/ColorPallette 3.png", key: "8" },
+  { url: "/assets/ColorPallette 4.png", key: "5" },
+  { url: "/assets/ColorPallette 5.png", key: "4" },
+  { url: "/assets/ColorPallette 6.png", key: "6" },
+  { url: "/assets/ColorPallette 7.png", key: "6" },
+  { url: "/assets/ColorPallette 8.png", key: "5" }
 ]);
 
 const trayHangTime = 1000;
@@ -331,6 +331,9 @@ img {
   border-radius: 24px;
   background: rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(14px);
+  overflow-y: scroll;
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;
 }
 
 @keyframes SlideInFromLeft
@@ -363,5 +366,31 @@ img {
   animation: SlideOutToLeft 0.5s;
   animation-timing-function:
       ease-out;animation-fill-mode: forwards;
+}
+
+#chooseSpeedTextInput {
+  width: 4.5rem;
+  text-align: center;
+
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(8px);
+
+  color: white;
+  font-size: 0.9rem;
+
+  padding: 0.35rem 0.5rem;
+
+  outline: none;
+  transition:
+      background-color 0.15s ease,
+      box-shadow 0.15s ease;
+}
+
+#chooseSpeedTextInput:focus {
+  background: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 0 0.6rem rgba(237, 221, 83, 0.35);
 }
 </style>

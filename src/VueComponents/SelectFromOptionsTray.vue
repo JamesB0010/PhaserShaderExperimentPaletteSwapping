@@ -52,7 +52,7 @@ async function UploadUserFile(){
         <SelectableImage :img-url = selectableItem.url :img-key = selectableItem.key class = "selectableItem" @selected = "OnTrayImageClicked" :img-fit-mode="props.imgFitMode"></SelectableImage>
       </div>
       <div id = "UploadImage" @click="UploadUserFile">
-        <img src="../../public/assets/UploadIcon.png" height="500" width="500"/>
+        <img src="/assets/UploadIcon.png" height="500" width="500"/>
       </div>
     </div>
   </div>

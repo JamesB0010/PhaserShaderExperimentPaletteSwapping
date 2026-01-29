@@ -3,14 +3,14 @@
 const newColorSchemeSelectedHandlers = new Array<ColorSchemeUpdatedHandler>();
 
 const colorSchemeURLsToAssetPackKey = new Map<string, string>([
-    ["../../public/assets/ColorPallette 1.png", "ColorPallette 1"],
-    ["../../public/assets/ColorPallette 2.png", "ColorPallette 2"],
-    ["../../public/assets/ColorPallette 3.png", "ColorPallette 3"],
-    ["../../public/assets/ColorPallette 4.png", "ColorPallette 4"],
-    ["../../public/assets/ColorPallette 5.png", "ColorPallette 5"],
-    ["../../public/assets/ColorPallette 6.png", "ColorPallette 6"],
-    ["../../public/assets/ColorPallette 7.png", "ColorPallette 7"],
-    ["../../public/assets/ColorPallette 8.png", "ColorPallette 8"],
+    ["/assets/ColorPallette 1.png", "ColorPallette 1"],
+    ["/assets/ColorPallette 2.png", "ColorPallette 2"],
+    ["/assets/ColorPallette 3.png", "ColorPallette 3"],
+    ["/assets/ColorPallette 4.png", "ColorPallette 4"],
+    ["/assets/ColorPallette 5.png", "ColorPallette 5"],
+    ["/assets/ColorPallette 6.png", "ColorPallette 6"],
+    ["/assets/ColorPallette 7.png", "ColorPallette 7"],
+    ["/assets/ColorPallette 8.png", "ColorPallette 8"],
 ]);
 
 function NewColorSchemeSelected(newImageInfo : {colorSchemeImageUrl : string, size: number}) {
