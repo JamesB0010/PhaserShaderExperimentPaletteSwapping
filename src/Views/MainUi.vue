@@ -296,6 +296,7 @@ img {
   opacity: 0;
   transition: opacity 0.15s ease;
   pointer-events: none;
+  border-radius: 14px;
 }
 
 .clickablePreview:hover .hoverOverlay {
