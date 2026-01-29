@@ -182,6 +182,7 @@ gradientMapImageProcessor.AddImageProcessedCallback((imgUrl : string) =>{
               max="2.5"
               step="0.01"
               v-model.number="speed"
+              id = "rangeInput"
           />
           <input
               type="text"
@@ -222,6 +223,10 @@ gradientMapImageProcessor.AddImageProcessedCallback((imgUrl : string) =>{
   initial-value: -95%;
 }
 
+#rangeInput{
+  width:70%;
+}
+
 #centerEverytingVertically {
   display: flex;
   width: 100%;
@@ -244,6 +249,7 @@ gradientMapImageProcessor.AddImageProcessedCallback((imgUrl : string) =>{
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
+  width:100%;
 }
 
 img {
@@ -319,6 +325,7 @@ img {
 #chooseSpeed {
   display: flex;
   align-items: center;
+  width: 100%;
   gap: 0.75rem;
 }
 
@@ -370,7 +377,7 @@ img {
 }
 
 #chooseSpeedTextInput {
-  width: 4.5rem;
+  width: 10%;
   text-align: center;
 
   border-radius: 10px;
