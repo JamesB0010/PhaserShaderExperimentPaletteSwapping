@@ -55,8 +55,9 @@ async function UploadUserFile(){
     <div id = "mainTray" :class = "{popIn: props.active, popOut: !props.active && hasBeenOpenedBefore}">
       <div v-for="selectableItem in props.selectableImages">
         <div id = "itemWrapper">
+          <SelectableImage :img-url = selectableItem.url :img-key = selectableItem.key class = "selectableItem" @selected = "OnTrayImageClicked" :img-fit-mode="props.imgFitMode">
           <ColorPaletteWidthDisplay/>
-          <SelectableImage :img-url = selectableItem.url :img-key = selectableItem.key class = "selectableItem" @selected = "OnTrayImageClicked" :img-fit-mode="props.imgFitMode"/>
+          </SelectableImage>
         </div>
       </div>
       <div id = "UploadImage" @click="UploadUserFile">
@@ -102,6 +103,10 @@ async function UploadUserFile(){
   
   transform: scale(0);
   background-color: rgba(0,0,0,0.5);
+  
+  /*ide scrollbars*/
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;
 }
 
 @keyframes fadeBackgroundFromBlack {

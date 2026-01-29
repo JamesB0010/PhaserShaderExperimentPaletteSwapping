@@ -153,7 +153,7 @@ gradientMapImageProcessor.AddImageProcessedCallback((imgUrl : string) =>{
             @click="DispyColorSchemeTray"
         >
           <img :src="colorGradientUrl" />
-          <div class="badge">{{ colorGradientSize }} colors</div>
+          <div class="badge">Palette Width: {{ colorGradientSize }}</div>
           <div class="hoverOverlay">Click to choose new</div>
         </div>
       </div>
@@ -310,18 +310,7 @@ img {
   opacity: 1;
 }
 
-.badge {
-  position: absolute;
-  right: 8px;
-  bottom: 8px;
 
-  padding: 0.25rem 0.6rem;
-  font-size: 0.75rem;
-
-  border-radius: 999px;
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(6px);
-}
 
 #chooseSpeed {
   display: flex;
@@ -341,6 +330,8 @@ img {
   background: rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(14px);
   overflow-y: scroll;
+  
+  /*ide scrollbars*/
   -ms-overflow-style: none;  /* IE and Edge */
   scrollbar-width: none;
 }
