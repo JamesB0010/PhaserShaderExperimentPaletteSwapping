@@ -26,7 +26,7 @@ export default defineConfig({
                     phaser: ['phaser']
                 }
             },
-            external: ["image-js"]
+            external: ["image-js, browser-fs-access"]
         },
         minify: 'terser',
         terserOptions: {
