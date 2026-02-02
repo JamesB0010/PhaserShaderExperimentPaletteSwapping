@@ -46,6 +46,8 @@ async function UploadUserFile(){
   await imageUploadProcessor.ProcessImage();
   
   userPickingFile = false;
+  
+  console.log(props.displayImageWidth);
 }
 
 </script>
@@ -56,7 +58,7 @@ async function UploadUserFile(){
       <div v-for="selectableItem in props.selectableImages">
         <div id = "itemWrapper">
           <SelectableImage :img-url = selectableItem.url :img-key = selectableItem.key class = "selectableItem" @selected = "OnTrayImageClicked" :img-fit-mode="props.imgFitMode">
-          <ColorPaletteWidthDisplay/>
+          <ColorPaletteWidthDisplay :v-if = "props.displayImageWidth" :palette-width= "Number(selectableItem.key)"/>
           </SelectableImage>
         </div>
       </div>

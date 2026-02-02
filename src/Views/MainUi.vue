@@ -201,7 +201,7 @@ gradientMapImageProcessor.AddImageProcessedCallback((imgUrl : string) =>{
           :active="colorSchemeTrayActive"
           @selected="ColorSchemeSelected"
           :image-upload-processor = "colorPaletteImageProcessor"
-          :display-image-width = true
+          :display-image-width = "true"
       />
     </div>
 

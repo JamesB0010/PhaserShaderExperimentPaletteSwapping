@@ -1,11 +1,18 @@
 ﻿<script setup lang="ts">
+import {DefineProps} from "vue";
 
+const props = defineProps({
+  PaletteWidth: {
+    type: Number,
+    default: -1
+  }
+})
 </script>
 
 <template>
 <div id = "topToBottomFlex">
   <div id = "rightToLeftFlex">
-    <div class = "badge">Palette Width: 6</div>
+    <div class = "badge">Palette Width: {{props.PaletteWidth}}</div>
   </div>
 </div>
 </template>
