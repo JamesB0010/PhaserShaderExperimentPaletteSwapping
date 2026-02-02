@@ -1,5 +1,5 @@
 ﻿import ImageUploadProcessor from "./ImageUploadProcessor.ts";
-import {fetchURL, Image, writeCanvas} from "image-js"
+import {fetchURL, Image, writeCanvas} from "../../node_modules/image-js"
 import {FileWithHandle} from "../../node_modules/browser-fs-access"
 
 export default class GradientMapImageProcessor extends ImageUploadProcessor{

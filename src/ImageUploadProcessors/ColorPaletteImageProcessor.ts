@@ -1,6 +1,6 @@
 ﻿import ImageUploadProcessor from "./ImageUploadProcessor.ts";
 import {FileWithHandle} from "../../node_modules/browser-fs-access"
-import {fetchURL, Image} from "image-js"
+import {fetchURL, Image} from "../../node_modules/image-js"
 
 export default class ColorPaletteImageProcessor extends ImageUploadProcessor{
     private onImageProcessedCallback : (colorPaletteData : {imageBlobUrl : string, size: number})=>void;
