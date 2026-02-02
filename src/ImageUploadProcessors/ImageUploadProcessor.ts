@@ -1,4 +1,4 @@
-﻿import {fileOpen, FileWithHandle} from "browser-fs-access"
+﻿import {fileOpen, FileWithHandle} from "../../node_modules/browser-fs-access"
 export default abstract class ImageUploadProcessor {
    public abstract ProcessImage():Promise<void>;
    
