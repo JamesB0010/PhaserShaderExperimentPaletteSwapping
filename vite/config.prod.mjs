@@ -25,7 +25,8 @@ export default defineConfig({
                 manualChunks: {
                     phaser: ['phaser']
                 }
-            }
+            },
+            external: ["image-js"]
         },
         minify: 'terser',
         terserOptions: {
