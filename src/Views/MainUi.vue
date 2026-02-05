@@ -4,11 +4,9 @@ import {AddNewUrlToAssetPackMapItem, NewColorSchemeSelected} from "../EventsFrom
 import { speed } from "../UiModelData/MainUiModelData.ts";
 import SelectFromOptionsTray from "../VueComponents/SelectFromOptionsTray.vue";
 import { NewGradientSelected } from "../EventsFromUi/NewBlackWhiteGradientSelected.ts";
-import {NewGradientMapUploaded} from "../EventsFromUi/NewGradientMapUploaded.ts";
 import GradientMapImageProcessor from "../ImageUploadProcessors/GradientMapImageProcessor.ts";
 import ColorPaletteImageProcessor from "../ImageUploadProcessors/ColorPaletteImageProcessor.ts";
-import {LoadNewColorPaletteIntoPhaser} from "../EventsFromUi/NewColorPaletteUploaded.ts";
-
+import {PhaserImageLoader} from "../PhaserVueCommunication/LoadImageIntoPhaser.ts"
 const colorGradientUrl = ref("/assets/ColorPallette 1.png");
 const blackWhiteGradientUrl = ref("/assets/GradientMap1.jpg");
 const colorGradientSize = ref(4);
@@ -106,7 +104,7 @@ function TryExpandCloseUiCard() {
 }
 
 async function NewGradientUploaded(url: string){
-  let newAssetKey = await NewGradientMapUploaded(url, selectableImages.value.length + 1);
+  let newAssetKey = await PhaserImageLoader.LoadNewAssetIntoPhaser(url, `GradientMap${selectableImages.value.length + 1}`);
   selectableImages.value.push({
     url: url, key: newAssetKey
   });
@@ -114,7 +112,7 @@ async function NewGradientUploaded(url: string){
 }
 
 async function NewColorPaletteUploaded(colorPaletteData : {imageBlobUrl: string; size: number}) {
-  let paletteAssetKey = await LoadNewColorPaletteIntoPhaser(colorPaletteData.imageBlobUrl, selectableColorSchemes.value.length + 1);
+  let paletteAssetKey = await PhaserImageLoader.LoadNewAssetIntoPhaser(colorPaletteData.imageBlobUrl, `ColorPalette${selectableColorSchemes.value.length + 1}`);
   const sizeAsString = colorPaletteData.size.toString();
   selectableColorSchemes.value.push({
     url: colorPaletteData.imageBlobUrl,

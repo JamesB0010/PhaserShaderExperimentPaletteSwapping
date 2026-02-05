@@ -7,8 +7,7 @@
 import WebGLRenderer = Phaser.Renderer.WebGL.WebGLRenderer;
 import RenderImagePinkShader from "../shaders/RenderImagePink.ts";
 import {AddNewBlackWhiteSelectedCallback} from "../EventsFromUi/NewBlackWhiteGradientSelected.ts";
-import {SetLoadIntoPhaserLambda} from "../EventsFromUi/NewGradientMapUploaded.ts";
-import {SetLoadPaletteIntoPhaserLambda} from "../EventsFromUi/NewColorPaletteUploaded.ts";
+import {PhaserImageLoader} from "../PhaserVueCommunication/LoadImageIntoPhaser.ts";
 /* END-USER-IMPORTS */
 
 export default class Level extends Phaser.Scene {
@@ -47,26 +46,21 @@ export default class Level extends Phaser.Scene {
 
 		this.SetOutputImageDisplaySize();
 		AddNewBlackWhiteSelectedCallback(this, this.NewBlackWhiteGradientSelected);
-		SetLoadIntoPhaserLambda((url: string, gradientMapCount: number) : Promise<string>=>{
-			return new Promise<string>(resolve => {
-				const newAssetKey = `GradientMap${gradientMapCount}`;
-				this.load.image(newAssetKey, url);
-				this.load.once('complete', () => {
-					resolve(newAssetKey);
-				})
-				this.load.start();
+		
+		
+		PhaserImageLoader.SetLoadAssetIntoPhaserCallback((url: string, assetName: string) =>{
+			return this.LoadURLImageIntoPhaser(url, assetName);
+		});
+	}
+	
+	private LoadURLImageIntoPhaser(url: string, assetName : string) : Promise<string> {
+		return new Promise<string>(resolve =>{
+			this.load.image(assetName, url);
+			this.load.once("complete", ()=>{
+				resolve(assetName);
 			})
-		});
-		SetLoadPaletteIntoPhaserLambda((url:string, colorPaletteCount: number) : Promise<string>=>{
-			return new Promise(resolve => {
-				const newAssetKey = `ColorPallette ${colorPaletteCount}`;
-				this.load.image(newAssetKey, url);
-				this.load.once('complete', () => {
-					resolve(newAssetKey);
-				})
-				this.load.start();
-			});
-		});
+			this.load.start();
+		})
 	}
 
 	private NewBlackWhiteGradientSelected(gradientAssetKey : string){
