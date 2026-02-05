@@ -8,17 +8,22 @@ const colorGradientDataStore = ColorGradientData();
 const blackWhiteGradientTrayDataStore = BlackWhiteGradientTrayData();
 const speedDataStore = SpeedData();
 
+if(matchMedia('(pointer:fine)').matches) {
+  window.addEventListener("mousemove", (event: MouseEvent) => {
+    sharedTrayDataStore.mouseX = event.clientX;
+    if (sharedTrayDataStore.lockUiCardOpen) return;
+    sharedTrayDataStore.TryExpandCloseUiCard();
+  });
+}
+else{
+  sharedTrayDataStore.mouseX = 0;
+}
+
+
 function DisplayBlackWhiteGradientTray() {
   blackWhiteGradientTrayDataStore.blackWhiteGradientTrayActive= true;
   sharedTrayDataStore.lockUiCardOpen = true;
 }
-
-window.addEventListener("mousemove", (event: MouseEvent) => {
-  sharedTrayDataStore.mouseX = event.clientX;
-  if (sharedTrayDataStore.lockUiCardOpen) return;
-  sharedTrayDataStore.TryExpandCloseUiCard();
-});
-
 
 function DispyColorSchemeTray() {
   colorGradientDataStore.colorSchemeTrayActive = true;
