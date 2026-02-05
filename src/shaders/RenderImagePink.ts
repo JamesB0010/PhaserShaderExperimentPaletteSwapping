@@ -1,7 +1,7 @@
 ﻿import WebGLTextureWrapper = Phaser.Renderer.WebGL.Wrappers.WebGLTextureWrapper;
 import Phaser from "phaser";
 import {AddNewColorSchemeSelectedCallback} from "../EventsFromUi/NewColorSchemeSelected.ts";
-import {speed} from "../UiModelData/MainUiModelData.ts";
+import {SpeedData} from "../UiDataStore.ts";
 
 const fragmentShader = `
 #define SHADER_NAME Pink
@@ -28,7 +28,7 @@ void main(){
     gl_FragColor = vec4(finalColor.rgb, 1.0);
 }
 `
-
+let speedDataStore : any = null;
 
 export default class RenderImagePinkShader extends Phaser.Renderer.WebGL.Pipelines.MultiPipeline{
     private colorPallette : WebGLTextureWrapper;
@@ -38,6 +38,9 @@ export default class RenderImagePinkShader extends Phaser.Renderer.WebGL.Pipelin
             game,
             fragShader: fragmentShader
         });
+        if(speedDataStore == null)
+            speedDataStore = SpeedData();
+        
         this.UpdateColorPalette({imageKey: "ColorPallette 1", size: 4});
         AddNewColorSchemeSelectedCallback(this, this.UpdateColorPalette);
     }
@@ -68,7 +71,7 @@ export default class RenderImagePinkShader extends Phaser.Renderer.WebGL.Pipelin
         this.set1i('colorPalette', textureUnit);
         
         this.set1f("uTime", this.game.loop.time / 1000);
-        this.set1f("uCycleSpeed", speed.value);
+        this.set1f("uCycleSpeed", speedDataStore.speed);
         this.set1f("uPaletteWidth", this.paletteWidth);
     }
 }

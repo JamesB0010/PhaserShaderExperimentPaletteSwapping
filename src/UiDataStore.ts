@@ -34,3 +34,9 @@ export const SharedTrayData = defineStore('SharedTrayData', () => {
     
     return {lockUiCardOpen, trayHangTime, uiCardClass, mouseX, TryExpandCloseUiCard};
 })
+
+export const SpeedData = defineStore('SpeedData', () => {
+    const speed = ref(0.8);
+    
+    return {speed};
+})

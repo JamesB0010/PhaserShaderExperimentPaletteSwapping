@@ -1,12 +1,12 @@
 ﻿<script setup lang="ts">
-import { speed } from "../UiModelData/MainUiModelData.ts";
 import ColorGradientTray from "../VueComponents/ColorGradientTray.vue";
-import {BlackWhiteGradientTrayData, ColorGradientData, SharedTrayData} from "../UiDataStore.ts";
+import {BlackWhiteGradientTrayData, ColorGradientData, SharedTrayData, SpeedData} from "../UiDataStore.ts";
 import ColorPaletteTray from "../VueComponents/ColorPaletteTray.vue";
 
 const sharedTrayDataStore = SharedTrayData();
 const colorGradientDataStore = ColorGradientData();
 const blackWhiteGradientTrayDataStore = BlackWhiteGradientTrayData();
+const speedDataStore = SpeedData();
 
 function DisplayBlackWhiteGradientTray() {
   blackWhiteGradientTrayDataStore.blackWhiteGradientTrayActive= true;
@@ -73,12 +73,12 @@ function DispyColorSchemeTray() {
               min="-2.5"
               max="2.5"
               step="0.01"
-              v-model.number="speed"
+              v-model.number="speedDataStore.speed"
               id = "rangeInput"
           />
           <input
               type="text"
-              v-model.number="speed"
+              v-model.number="speedDataStore.speed"
               id="chooseSpeedTextInput"
           />
         </div>
