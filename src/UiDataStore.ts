@@ -24,12 +24,11 @@ export const SharedTrayData = defineStore('SharedTrayData', () => {
     const mouseX= ref(window.innerWidth * 0.5);
 
     function TryExpandCloseUiCard() {
+        if(!matchMedia('(pointer:fine)').matches)
+            return;
+        
         uiCardClass.value =
             mouseX.value < window.innerWidth * 0.4 ? "uiCardActive" : "uiCardInactive";
-        
-        if(uiCardClass.value == "uiCardActive") {
-            console.log("active");
-        }
     }
     
     return {lockUiCardOpen, trayHangTime, uiCardClass, mouseX, TryExpandCloseUiCard};
