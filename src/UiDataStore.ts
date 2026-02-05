@@ -10,6 +10,13 @@ export const ColorGradientData = defineStore('ColorGradientData', () => {
     return {colorGradientUrl, colorSchemeTrayActive, colorGradientSize};
 })
 
+export const BlackWhiteGradientTrayData = defineStore('BlackWhiteGradientTrayData', () => {
+    const blackWhiteGradientTrayActive = ref(false);
+    const blackWhiteGradientUrl = ref("/assets/GradientMap1.jpg");
+    
+    return {blackWhiteGradientTrayActive, blackWhiteGradientUrl};
+})
+
 export const SharedTrayData = defineStore('SharedTrayData', () => {
     let lockUiCardOpen = false;
     const trayHangTime = 1000;
