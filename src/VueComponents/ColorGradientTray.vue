@@ -37,8 +37,8 @@ function ColorSchemeSelected(args: { imgUrl: string; imgKey: string }) {
     size: Number(args.imgKey)
   };
 
-  colorGradientDataStore.colorGradientUrl= selectedColorSchemeInfo.colorSchemeImageUrl;
-  colorGradientDataStore.colorGradientSize = selectedColorSchemeInfo.size;
+  colorGradientDataStore.url = selectedColorSchemeInfo.colorSchemeImageUrl;
+  colorGradientDataStore.size = selectedColorSchemeInfo.size;
 
   NewColorSchemeSelected(selectedColorSchemeInfo);
 }
@@ -56,7 +56,7 @@ async function NewColorPaletteUploaded(colorPaletteData : {imageBlobUrl: string;
 
 
 function CloseColorSchemeTray() {
-  colorGradientDataStore.colorSchemeTrayActive= false;
+  colorGradientDataStore.active = false;
   setTimeout(() => {
     sharedTrayDataStore.lockUiCardOpen = false;
     sharedTrayDataStore.TryExpandCloseUiCard();
@@ -71,7 +71,7 @@ function CloseColorSchemeTray() {
   <div id="colorGradientTrayContaier">
     <select-from-options-tray
         :selectable-images="selectableColorSchemes"
-        :active="colorGradientDataStore.colorSchemeTrayActive"
+        :active="colorGradientDataStore.active"
         @selected="ColorSchemeSelected"
         :image-upload-processor = "colorPaletteImageProcessor"
         :display-image-width = "true"

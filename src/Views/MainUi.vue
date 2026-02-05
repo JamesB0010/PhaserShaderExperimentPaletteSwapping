@@ -1,34 +1,20 @@
 ﻿<script setup lang="ts">
 import ColorGradientTray from "../VueComponents/ColorGradientTray.vue";
-import {BlackWhiteGradientTrayData, ColorGradientData, SharedTrayData, SpeedData} from "../UiDataStore.ts";
 import ColorPaletteTray from "../VueComponents/ColorPaletteTray.vue";
+import Init from "../Utility/MainUiInit.ts";
 
-const sharedTrayDataStore = SharedTrayData();
-const colorGradientDataStore = ColorGradientData();
-const blackWhiteGradientTrayDataStore = BlackWhiteGradientTrayData();
-const speedDataStore = SpeedData();
+const {sharedTrayDataStore, colorGradientDataStore, blackWhiteGradientTrayDataStore, speedDataStore} = Init();
 
-if(matchMedia('(pointer:fine)').matches) {
-  window.addEventListener("mousemove", (event: MouseEvent) => {
-    sharedTrayDataStore.mouseX = event.clientX;
-    if (sharedTrayDataStore.lockUiCardOpen) return;
-    sharedTrayDataStore.TryExpandCloseUiCard();
-  });
+function DisplayColorSchemeTray() {
+  colorGradientDataStore.active = true;
+  sharedTrayDataStore.lockUiCardOpen = true;
 }
-else{
-  sharedTrayDataStore.mouseX = 0;
-}
-
 
 function DisplayBlackWhiteGradientTray() {
-  blackWhiteGradientTrayDataStore.blackWhiteGradientTrayActive= true;
+  blackWhiteGradientTrayDataStore.active = true;
   sharedTrayDataStore.lockUiCardOpen = true;
 }
 
-function DispyColorSchemeTray() {
-  colorGradientDataStore.colorSchemeTrayActive = true;
-  sharedTrayDataStore.lockUiCardOpen = true;
-}
 </script>
 
 <template>
@@ -47,10 +33,10 @@ function DispyColorSchemeTray() {
         <div
             id="gradientMapPreview"
             class="clickablePreview"
-            @click="DispyColorSchemeTray"
+            @click="DisplayColorSchemeTray"
         >
-          <img :src="colorGradientDataStore.colorGradientUrl" />
-          <div class="badge">Palette Width: {{ colorGradientDataStore.colorGradientSize }}</div>
+          <img :src="colorGradientDataStore.url" />
+          <div class="badge">Palette Width: {{ colorGradientDataStore.size}}</div>
           <div class="hoverOverlay">Click to choose new</div>
         </div>
       </div>
@@ -64,7 +50,7 @@ function DispyColorSchemeTray() {
             class="clickablePreview"
             @click="DisplayBlackWhiteGradientTray"
         >
-          <img :src="blackWhiteGradientTrayDataStore.blackWhiteGradientUrl" />
+          <img :src="blackWhiteGradientTrayDataStore.url" />
           <div class="hoverOverlay">Click to choose new</div>
         </div>
       </div>

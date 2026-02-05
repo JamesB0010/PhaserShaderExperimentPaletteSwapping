@@ -27,13 +27,13 @@ const selectableImages: Ref<Array<{ url: string; key: string }>> = ref([
 
 
 function BlackWhiteGradientSelected(args: { imgUrl: string; imgKey: string }) {
-  blackWhiteGradientTrayDataStore.blackWhiteGradientUrl = args.imgUrl;
+  blackWhiteGradientTrayDataStore.url= args.imgUrl;
   CloseBlackWhiteGradientTray();
   NewGradientSelected(args.imgKey);
 }
 
 function CloseBlackWhiteGradientTray() {
-  blackWhiteGradientTrayDataStore.blackWhiteGradientTrayActive = false;
+  blackWhiteGradientTrayDataStore.active = false;
   setTimeout(() => {
     sharedTrayDataStore.lockUiCardOpen = false;
     sharedTrayDataStore.TryExpandCloseUiCard();
@@ -60,7 +60,7 @@ async function NewGradientUploaded(url: string){
   <div id="blackWhiteImageTrayContainer">
     <select-from-options-tray
         :selectable-images="selectableImages"
-        :active="blackWhiteGradientTrayDataStore.blackWhiteGradientTrayActive"
+        :active="blackWhiteGradientTrayDataStore.active"
         @selected="BlackWhiteGradientSelected"
         img-fit-mode="cover"
         :image-upload-processor="gradientMapImageProcessor"

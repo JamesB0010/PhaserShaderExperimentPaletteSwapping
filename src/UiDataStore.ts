@@ -3,18 +3,18 @@ import {ref} from "vue";
 
 
 export const ColorGradientData = defineStore('ColorGradientData', () => {
-    const colorGradientUrl = ref("/assets/ColorPallette 1.png");
-    const colorSchemeTrayActive = ref(false);
-    const colorGradientSize = ref(4);
+    const url = ref("/assets/ColorPallette 1.png");
+    const active = ref(false);
+    const size = ref(4);
     
-    return {colorGradientUrl, colorSchemeTrayActive, colorGradientSize};
+    return {url, active, size};
 })
 
 export const BlackWhiteGradientTrayData = defineStore('BlackWhiteGradientTrayData', () => {
-    const blackWhiteGradientTrayActive = ref(false);
-    const blackWhiteGradientUrl = ref("/assets/GradientMap1.jpg");
+    const url = ref("/assets/GradientMap1.jpg");
+    const active = ref(false);
     
-    return {blackWhiteGradientTrayActive, blackWhiteGradientUrl};
+    return {active, url};
 })
 
 export const SharedTrayData = defineStore('SharedTrayData', () => {
