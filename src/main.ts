@@ -3,6 +3,7 @@ import Level from "./scenes/Level";
 import Preload from "./scenes/Preload";
 import {createApp} from "vue";
 import MainUi from "./Views/MainUi.vue";
+import {createPinia} from "pinia";
 
 class Boot extends Phaser.Scene {
 
@@ -41,5 +42,8 @@ window.addEventListener('load', function () {
 });
 
 function CreateAndMountVue(){
-	createApp(MainUi).mount("#uiContainer");
+	const pinia = createPinia();
+	const app = createApp(MainUi);
+	app.use(pinia);
+	app.mount("#uiContainer");
 }

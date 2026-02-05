@@ -1,15 +1,17 @@
 ﻿<script setup lang="ts">
 import {Ref, ref} from 'vue'
-import {AddNewUrlToAssetPackMapItem, NewColorSchemeSelected} from "../EventsFromUi/NewColorSchemeSelected.ts";
 import { speed } from "../UiModelData/MainUiModelData.ts";
 import SelectFromOptionsTray from "../VueComponents/SelectFromOptionsTray.vue";
 import { NewGradientSelected } from "../EventsFromUi/NewBlackWhiteGradientSelected.ts";
 import GradientMapImageProcessor from "../ImageUploadProcessors/GradientMapImageProcessor.ts";
-import ColorPaletteImageProcessor from "../ImageUploadProcessors/ColorPaletteImageProcessor.ts";
 import {PhaserImageLoader} from "../PhaserVueCommunication/LoadImageIntoPhaser.ts"
-const colorGradientUrl = ref("/assets/ColorPallette 1.png");
+import ColorGradientTray from "../VueComponents/ColorGradientTray.vue";
+import {ColorGradientData, SharedTrayData} from "../UiDataStore.ts";
+
+const sharedTrayDataStore = SharedTrayData();
+const colorGradientDataStore = ColorGradientData();
+
 const blackWhiteGradientUrl = ref("/assets/GradientMap1.jpg");
-const colorGradientSize = ref(4);
 
 const selectableImages: Ref<Array<{ url: string; key: string }>> = ref([
   { url: "/assets/GradientMap1.jpg", key: "GradientMap1" },
@@ -26,32 +28,14 @@ const selectableImages: Ref<Array<{ url: string; key: string }>> = ref([
   { url: "/assets/GradientMap12.png", key: "GradientMap12" },
 ]);
 
-const selectableColorSchemes: Ref<Array<{ url: string; key: string }>> = ref([
-  { url: "/assets/ColorPallette 1.png", key: "4" },
-  { url: "/assets/ColorPallette 2.png", key: "4" },
-  { url: "/assets/ColorPallette 3.png", key: "8" },
-  { url: "/assets/ColorPallette 4.png", key: "5" },
-  { url: "/assets/ColorPallette 5.png", key: "4" },
-  { url: "/assets/ColorPallette 6.png", key: "6" },
-  { url: "/assets/ColorPallette 7.png", key: "6" },
-  { url: "/assets/ColorPallette 8.png", key: "5" }
-]);
-
-const trayHangTime = 1000;
-let lockUiCardOpen = false;
 
 const blackWhiteGradientTrayActive = ref(false);
-const colorSchemeTrayActive = ref(false);
 
 function DisplayBlackWhiteGradientTray() {
   blackWhiteGradientTrayActive.value = true;
-  lockUiCardOpen = true;
+  sharedTrayDataStore.lockUiCardOpen = true;
 }
 
-function DispyColorSchemeTray() {
-  colorSchemeTrayActive.value = true;
-  lockUiCardOpen = true;
-}
 
 function BlackWhiteGradientSelected(args: { imgUrl: string; imgKey: string }) {
   blackWhiteGradientUrl.value = args.imgUrl;
@@ -59,49 +43,23 @@ function BlackWhiteGradientSelected(args: { imgUrl: string; imgKey: string }) {
   NewGradientSelected(args.imgKey);
 }
 
-function ColorSchemeSelected(args: { imgUrl: string; imgKey: string }) {
-  CloseColorSchemeTray();
-
-  const selectedColorSchemeInfo = {
-    colorSchemeImageUrl: args.imgUrl,
-    size: Number(args.imgKey)
-  };
-
-  colorGradientUrl.value = selectedColorSchemeInfo.colorSchemeImageUrl;
-  colorGradientSize.value = selectedColorSchemeInfo.size;
-
-  NewColorSchemeSelected(selectedColorSchemeInfo);
-}
-
 function CloseBlackWhiteGradientTray() {
   blackWhiteGradientTrayActive.value = false;
   setTimeout(() => {
-    lockUiCardOpen = false;
-    TryExpandCloseUiCard();
-  }, trayHangTime);
+    sharedTrayDataStore.lockUiCardOpen = false;
+    sharedTrayDataStore.TryExpandCloseUiCard();
+  }, sharedTrayDataStore.trayHangTime);
 }
 
-function CloseColorSchemeTray() {
-  colorSchemeTrayActive.value = false;
-  setTimeout(() => {
-    lockUiCardOpen = false;
-    TryExpandCloseUiCard();
-  }, trayHangTime);
-}
 
-let mouseX: number = window.innerWidth * 0.5;
 window.addEventListener("mousemove", (event: MouseEvent) => {
-  mouseX = event.clientX;
-  if (lockUiCardOpen) return;
-  TryExpandCloseUiCard();
+  sharedTrayDataStore.mouseX = event.clientX;
+  if (sharedTrayDataStore.lockUiCardOpen) return;
+  sharedTrayDataStore.TryExpandCloseUiCard();
 });
 
-const uiCardClass = ref<string>();
 
-function TryExpandCloseUiCard() {
-  uiCardClass.value =
-      mouseX < window.innerWidth * 0.4 ? "uiCardActive" : "uiCardInactive";
-}
+
 
 async function NewGradientUploaded(url: string){
   let newAssetKey = await PhaserImageLoader.LoadNewAssetIntoPhaser(url, `GradientMap${selectableImages.value.length + 1}`);
@@ -110,22 +68,10 @@ async function NewGradientUploaded(url: string){
   });
   BlackWhiteGradientSelected({imgUrl: url, imgKey: newAssetKey});
 }
-
-async function NewColorPaletteUploaded(colorPaletteData : {imageBlobUrl: string; size: number}) {
-  let paletteAssetKey = await PhaserImageLoader.LoadNewAssetIntoPhaser(colorPaletteData.imageBlobUrl, `ColorPalette${selectableColorSchemes.value.length + 1}`);
-  const sizeAsString = colorPaletteData.size.toString();
-  selectableColorSchemes.value.push({
-    url: colorPaletteData.imageBlobUrl,
-    key: sizeAsString
-  });
-  AddNewUrlToAssetPackMapItem(colorPaletteData.imageBlobUrl, paletteAssetKey);
-  ColorSchemeSelected({imgUrl: colorPaletteData.imageBlobUrl, imgKey: sizeAsString});
+function DispyColorSchemeTray() {
+  colorGradientDataStore.colorSchemeTrayActive = true;
+  sharedTrayDataStore.lockUiCardOpen = true;
 }
-
-const colorPaletteImageProcessor : ColorPaletteImageProcessor = new ColorPaletteImageProcessor();
-colorPaletteImageProcessor.AddImageProcessedCallback((paletteData : {imageBlobUrl : string, size: number}) =>{
-  NewColorPaletteUploaded(paletteData);
-})
 const gradientMapImageProcessor : GradientMapImageProcessor = new GradientMapImageProcessor();
 gradientMapImageProcessor.AddImageProcessedCallback((imgUrl : string) =>{
   NewGradientUploaded(imgUrl);
@@ -134,7 +80,7 @@ gradientMapImageProcessor.AddImageProcessedCallback((imgUrl : string) =>{
 
 <template>
   <div id="centerEverytingVertically">
-    <div id="uiCard" :class="uiCardClass">
+    <div id="uiCard" :class="sharedTrayDataStore.uiCardClass">
 
       <div id="titleSection">
         <h1>Pallette Cycling Demo</h1>
@@ -150,8 +96,8 @@ gradientMapImageProcessor.AddImageProcessedCallback((imgUrl : string) =>{
             class="clickablePreview"
             @click="DispyColorSchemeTray"
         >
-          <img :src="colorGradientUrl" />
-          <div class="badge">Palette Width: {{ colorGradientSize }}</div>
+          <img :src="colorGradientDataStore.colorGradientUrl" />
+          <div class="badge">Palette Width: {{ colorGradientDataStore.colorGradientSize }}</div>
           <div class="hoverOverlay">Click to choose new</div>
         </div>
       </div>
@@ -193,15 +139,7 @@ gradientMapImageProcessor.AddImageProcessedCallback((imgUrl : string) =>{
     </div>
 
     <!-- Trays -->
-    <div id="colorGradientTrayContaier">
-      <select-from-options-tray
-          :selectable-images="selectableColorSchemes"
-          :active="colorSchemeTrayActive"
-          @selected="ColorSchemeSelected"
-          :image-upload-processor = "colorPaletteImageProcessor"
-          :display-image-width = "true"
-      />
-    </div>
+    <ColorGradientTray/>
 
     <div id="blackWhiteImageTrayContainer">
       <select-from-options-tray
